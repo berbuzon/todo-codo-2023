@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 // estado = tareas[]
 // estado = forms{} (si lo hago controlado)
@@ -6,23 +6,19 @@ import React, { useState } from "react";
 
 const tareas = [];
 
-/* [].map((tarea) => {
-  return (
-        <div>
-            cosas
-        </div>
-        )
-    }); */
-
 const ToDo = () => {
   const [tareas, setTareas] = useState([]);
-
   const [entrada, setEntrada] = useState("");
 
-  const handleAddTask = () => {
-    setTareas([...tareas, entrada]);
-    // setEntrada("");
-    console.log(tareas);
+  useEffect(() => {
+    console.log(tareas); // Muestra las tareas cuando tareas se actualiza
+  }, [tareas]); // Ejecuta el efecto cuando tareas cambia
+
+  const handleAgregaItem = () => {
+    if (entrada.trim() !== "") {
+      setTareas((prevItem) => [...prevItem, entrada]);
+    }
+    setEntrada("");
   };
 
   return (
@@ -30,22 +26,21 @@ const ToDo = () => {
       <h1>To Do List</h1>
       <section>
         <h2>List</h2>
-
-        <ul>
-          {tareas.map((tarea, index) => (
+        <ul style={{ listStyleType: "none" }}>
+          {tareas.map((item, index) => (
             <div
               key={index}
               style={{
                 display: "flex",
                 width: "300 px",
                 justifyContent: "space-between",
-                border: "1px solid white",
+                border: "1px solid green",
                 borderRadius: "5px",
                 padding: "5px",
               }}
             >
-              <input type="checkbox" name="" id="" />
-              <li>{tarea}</li>
+              <input type="checkbox" name="" id="index" />
+              <li>{item}</li>
               <div
                 style={{
                   display: "flex",
@@ -63,12 +58,12 @@ const ToDo = () => {
         <form>
           <input
             type="text"
-            name="entrada"
+            name=""
             id=""
             value={entrada}
             onChange={(e) => setEntrada(e.target.value)}
           />
-          <button type="button" onClick={handleAddTask}>
+          <button type="button" onClick={handleAgregaItem}>
             Add
           </button>
         </form>
